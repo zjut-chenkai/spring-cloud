@@ -2,8 +2,9 @@ package org.com.ck.websocket;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.com.ck.bean.ChatProtocolInfo;
+
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,18 +24,20 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
 		Channel incoming = ctx.channel();
 		String requestmsg = ((TextWebSocketFrame) msg).text();
-		System.out.println(requestmsg);
-		JSONObject obj = JSON.parseObject(requestmsg);
-		if ("1".equals(obj.getString("code"))) {
-			sessionChannelMap.put(obj.getString("data"), incoming);
-		} else if ("2".equals(obj.getString("code"))){
-			sessionChannelMap.get(obj.getString("data")).writeAndFlush(new TextWebSocketFrame(obj.getString("msg")));
+		ChatProtocolInfo obj = JSON.parseObject(requestmsg, ChatProtocolInfo.class);
+		if ("100001".equals(obj.getCode())) {
+			sessionChannelMap.put(obj.getFr(), incoming);
+		} else if ("100002".equals(obj.getCode())) {
+			incoming.writeAndFlush(new TextWebSocketFrame(obj.getFr() + ":" + obj.getMsg()));
+
+			sessionChannelMap.get(obj.getTo()).writeAndFlush(new TextWebSocketFrame(obj.getFr() + ":" + obj.getMsg()));
 		} else {
 			for (Channel channel : channels) {
 				if (channel != incoming) {
-					channel.writeAndFlush(new TextWebSocketFrame("[1---" + incoming.remoteAddress() + "]" + msg.text()));
+					channel.writeAndFlush(
+							new TextWebSocketFrame(obj.getMsg()));
 				} else {
-					channel.writeAndFlush(new TextWebSocketFrame("[you---]" + msg.text()));
+					channel.writeAndFlush(new TextWebSocketFrame(obj.getMsg()));
 				}
 			}
 		}
