@@ -1,5 +1,10 @@
 package org.com.ck.websocket;
 
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -12,14 +17,25 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
 	public static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
+	private static ConcurrentHashMap<String, Channel> sessionChannelMap = new ConcurrentHashMap<String, Channel>();
+
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
 		Channel incoming = ctx.channel();
-		for (Channel channel : channels) {
-			if (channel != incoming) {
-				channel.writeAndFlush(new TextWebSocketFrame("[1---" + incoming.remoteAddress() + "]" + msg.text()));
-			} else {
-				channel.writeAndFlush(new TextWebSocketFrame("[you---]" + msg.text()));
+		String requestmsg = ((TextWebSocketFrame) msg).text();
+		System.out.println(requestmsg);
+		JSONObject obj = JSON.parseObject(requestmsg);
+		if ("1".equals(obj.getString("code"))) {
+			sessionChannelMap.put(obj.getString("data"), incoming);
+		} else if ("2".equals(obj.getString("code"))){
+			sessionChannelMap.get(obj.getString("data")).writeAndFlush(new TextWebSocketFrame(obj.getString("msg")));
+		} else {
+			for (Channel channel : channels) {
+				if (channel != incoming) {
+					channel.writeAndFlush(new TextWebSocketFrame("[1---" + incoming.remoteAddress() + "]" + msg.text()));
+				} else {
+					channel.writeAndFlush(new TextWebSocketFrame("[you---]" + msg.text()));
+				}
 			}
 		}
 	}
@@ -27,8 +43,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	@Override
 	public void handlerAdded(ChannelHandlerContext ctx) throws Exception { // (2)
 		Channel incoming = ctx.channel();
-
-		// Broadcast a message to multiple Channels
 		channels.writeAndFlush(new TextWebSocketFrame("[SERVER--join--] - " + incoming.remoteAddress() + " 加入"));
 
 		channels.add(incoming);
@@ -42,7 +56,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 		// Broadcast a message to multiple Channels
 		channels.writeAndFlush(new TextWebSocketFrame("[SERVER--leave--] - " + incoming.remoteAddress() + " 离开"));
 
-		System.out.println("Client:" + incoming.remoteAddress() + "离开");
+		// System.out.println("Client:" + incoming.remoteAddress() + "离开");
 
 		// A closed Channel is automatically removed from ChannelGroup,
 		// so there is no need to do "channels.remove(ctx.channel());"
@@ -51,20 +65,22 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception { // (5)
 		Channel incoming = ctx.channel();
-		System.out.println("Client:--you--" + incoming.remoteAddress() + "在线");
+		// System.out.println("Client:--you--" + incoming.remoteAddress() +
+		// "在线");
 	}
 
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception { // (6)
 		Channel incoming = ctx.channel();
 		System.out.println(incoming);
-		System.out.println("Client:--out --" + incoming.remoteAddress() + "掉线");
+		// System.out.println("Client:--out --" + incoming.remoteAddress() +
+		// "掉线");
 	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		Channel incoming = ctx.channel();
-		System.out.println("Client:" + incoming.remoteAddress() + "异常");
+		// System.out.println("Client:" + incoming.remoteAddress() + "异常");
 		// 当出现异常就关闭连接
 		cause.printStackTrace();
 		ctx.close();

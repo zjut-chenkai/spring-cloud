@@ -9,9 +9,8 @@ public class SpringBootMain {
 
 	public static void main(String[] args) {
 		try {
-			new WebsocketChatServer(8080).start();
+			new WebsocketChatServer(8081).start();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 //		SpringApplication.run(SpringBootMain.class, args);
