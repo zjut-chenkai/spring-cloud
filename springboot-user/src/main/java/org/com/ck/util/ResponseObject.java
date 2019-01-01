@@ -26,6 +26,12 @@ public class ResponseObject {
 		return new ResponseObject(commonCodeMsg);
 	}
 
+	public static ResponseObject getResponseObject(CommonCodeMsg commonCodeMsg, Object data) {
+		ResponseObject rs = new ResponseObject(commonCodeMsg);
+		rs.setData(data);
+		return rs;
+	}
+
 	public static ResponseObject successful() {
 		return getResponseObject(BaseCode.SUCCESS);
 	}

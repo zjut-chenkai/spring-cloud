@@ -1,6 +1,7 @@
 package org.com.ck.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class User implements Serializable {
 
@@ -8,18 +9,30 @@ public class User implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String passid;
+	private int id;
+	private String userId;
 	private String name;
 	private String phone;
 	private String username;
 	private String password;
+	private String nickname;
+	private Date registerTime;
+	private String headImg;
 
-	public String getPassid() {
-		return passid;
+	public int getId() {
+		return id;
 	}
 
-	public void setPassid(String passid) {
-		this.passid = passid;
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getName() {
@@ -52,6 +65,30 @@ public class User implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public Date getRegisterTime() {
+		return registerTime;
+	}
+
+	public void setRegisterTime(Date registerTime) {
+		this.registerTime = registerTime;
+	}
+
+	public String getHeadImg() {
+		return headImg;
+	}
+
+	public void setHeadImg(String headImg) {
+		this.headImg = headImg;
 	}
 
 }

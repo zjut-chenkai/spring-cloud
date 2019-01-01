@@ -11,6 +11,7 @@
 		<module>springboot-mybatis</module>
 		<module>springboot-netty</module>
 		<module>springboot-user</module>
+		<module>springboot-chat</module>
 	</modules>
 
 	<parent>
