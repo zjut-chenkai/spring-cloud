@@ -22,12 +22,12 @@ public class ActiveMQConfig {
 
 	@Bean
 	public Queue springbootQueue() {
-		return new ActiveMQQueue("springboot-activemq-queue");
+		return new ActiveMQQueue("springboot.activemq.queue");
 	}
 
 	@Bean
 	public Topic springbootTopic() {
-		return new ActiveMQTopic("springboot-activemq-topic");
+		return new ActiveMQTopic("springboot.activemq.topic");
 	}
 
 	@Bean
@@ -42,7 +42,8 @@ public class ActiveMQConfig {
 		jmsListenerContainerFactory.setConnectionFactory(activeMQConnectionFactory);
 
 		/**
-		 * 如果JMS的acknowledgemode设置的是客户端手动提交，这时spring会处理成自动提交，所以手动提交设置不起作用，因此手动提交需要这里设置成ActiveMq提供的模式，数字4表示
+		 * 如果JMS的acknowledgemode设置的是客户端手动提交，这时spring会处理成自动提交，所以手动提交设置不起作用，
+		 * 因此手动提交需要这里设置成ActiveMq提供的模式，数字4表示
 		 */
 		jmsListenerContainerFactory.setSessionAcknowledgeMode(4);
 		/**
@@ -54,7 +55,7 @@ public class ActiveMQConfig {
 		 */
 		jmsListenerContainerFactory.setMessageConverter(jacksonJmsMessageConverter());
 		// log.info(">>>Topic对应的监听器容器创建成功");
-
+System.err.println(">>>Topic对应的监听器容器创建成功");
 		return jmsListenerContainerFactory;
 	}
 
@@ -70,24 +71,21 @@ public class ActiveMQConfig {
 		jmsListenerContainerFactory.setConnectionFactory(activeMQConnectionFactory);
 
 		/**
-		 * 如果设置JMS的acknowledgemode=2，即客户端手动确认，这时spring会处理成自动确认，所以手动确认设置不起作用，
-		 * 因此手动提交需要设置acknowledgemode=4，此确认模式是activemq定义的非JMS标准
+		 * 如果JMS的acknowledgemode设置的是客户端手动提交，这时spring会处理成自动提交，所以手动提交设置不起作用，
+		 * 因此手动提交需要这里设置成ActiveMq提供的模式，数字4表示
 		 */
 		jmsListenerContainerFactory.setSessionAcknowledgeMode(4);
 		/**
-		 * 1、开启本地事务控制，如果想要手动确认消息，需要关闭本地事务，
-		 * 
-		 * @see AbstractMessageListenerContainer#commitIfNecessary
-		 *      2、开启本地事务控制时，可以通过会话回滚（最简单的方式是抛出异常）达到手动确认模式的效果
+		 * 开启事务控制
 		 */
-		jmsListenerContainerFactory.setSessionTransacted(false);
+		jmsListenerContainerFactory.setSessionTransacted(true);
 		jmsListenerContainerFactory.setCacheLevelName("CACHE_CONSUMER");
 		/**
 		 * 使用消息转换器
 		 */
 		jmsListenerContainerFactory.setMessageConverter(jacksonJmsMessageConverter());
 		// log.info(">>>Queue对应的监听器容器创建成功");
-
+		System.err.println(">>>>Queue对应的监听器容器创建成功");
 		return jmsListenerContainerFactory;
 	}
 
@@ -98,5 +96,4 @@ public class ActiveMQConfig {
 		converter.setTypeIdPropertyName("_type");
 		return converter;
 	}
-
 }

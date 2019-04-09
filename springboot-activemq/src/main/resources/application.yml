@@ -1,50 +1,31 @@
-server: 
+server:
   port: 8090
-  servlet: 
+  servlet:
     context-path: /springboot-activemq
-spring: 
-  jms: 
+spring:
+  jms:
     listener:
-      # acknowledge-mode: CLIENT 
       auto-startup: true
       concurrency: 2
       max-concurrency: 4
     template:
-      # 如果开启此项，发送消息时使用delivery-mode、priority、time-to-live设置，当这三项设置有一项被设置时，此项默认开启
       qos-enabled: true
-      # 消息是否持久化，默认开启持久化
       delivery-mode: PERSISTENT
-      # 消息优先级，默认4
       priority: 4
-      # 消息过期时间，
       time-to-live: 8640000
       receive-timeout: 1000
   activemq:
-    # activeMQ地址
-    broker-url: tcp://127.0.0.1:61616
-    # 集群方式
-    # broker-url: failover:(tcp://172.18.1.188:61616,tcp://172.18.1.18:61616)  
+    broker-url: tcp://172.28.19.97:61616
     user: admin
     password: admin
-    # 是否启用内存模式（也就是不安装MQ，项目启动时同时也启动一个MQ实例）
     in-memory: false
-    # 发送消息等待返回超时，默认0ms，一直等待
     send-timeout: 3000
     pool:
-      # 当连接池无连接可用时是否阻塞
       block-if-full: true
-      # 当连接池无可用连接时，请求最长阻塞时间
       block-if-full-timeout: -1
-      # 启动是否创建连接，用于预热连接池
       create-connection-on-startup: true
-      # 是否替换默认的connectionFactory
-      enabled: true
-      # 超时时间
       expiry-timeout: 0
-      # 空闲时间
       idle-timeout: 30000
-      # 最大连接数
       max-connections: 1
-    packages: 
-      # 信任所有的包
-      trust-all: true      
+    packages:
+      trust-all: true
