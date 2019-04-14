@@ -1,0 +1,12 @@
+server: 
+  port: 8090
+spring: 
+  application: 
+    name: springcloud-zk-server
+  cloud: 
+    zookeeper: 
+      connectString: localhost:2181 
+      discovery: 
+        instanceHost: localhost 
+        instancePort: ${server.port} 
+      
