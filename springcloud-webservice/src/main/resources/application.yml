@@ -1,0 +1,32 @@
+server:
+  port: 8100
+  servlet:
+    context-path: /demo
+    session:
+      timeout: 30
+  connection-timeout: 20000
+  tomcat:
+    max-threads: 2400
+    accept-count: 5000
+    uri-encoding: UTF-8
+    min-spare-threads: 100
+    accesslog:
+      enabled: true
+      directory: /apprun/logs/wbDemo/access/
+      prefix: access_log
+      suffix: .log
+      file-date-format: .yyyy-MM-dd
+      pattern: common
+
+spring:
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+
+
+

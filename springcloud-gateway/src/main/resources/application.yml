@@ -1,0 +1,18 @@
+server: 
+  port: 9050
+spring: 
+  application: 
+    name: springcloud-gateway
+eureka: 
+  client: 
+    serviceUrl: 
+      # eureka注册中心的地址
+      defaultZone: http://192.168.119.128:8001/eureka/,http://192.168.119.128:8002/eureka/,http://192.168.119.128:8003/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" 
+  endpoint:
+      health:
+        show-details: ALWAYS      

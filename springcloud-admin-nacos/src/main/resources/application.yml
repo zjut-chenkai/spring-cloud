@@ -1,0 +1,25 @@
+management:
+    endpoint:
+        health:
+            show-details: always
+    endpoints:
+        web:
+            exposure:
+                exclude:
+                    include: '*'
+server:
+    port: 8781
+spring:
+    cloud:
+        nacos:
+            discovery:
+#                server-addr: 127.0.0.1:8848
+                server-addr: 172.28.25.210:8848,172.28.52.45:8848,172.28.52.45:8848
+    security:
+        user:
+            name: admin
+            password: admin
+    boot:
+      admin: 
+        client:
+          url: http://localhost:8000

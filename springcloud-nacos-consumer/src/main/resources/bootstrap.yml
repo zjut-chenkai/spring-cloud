@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: health-consumer
+  cloud: 
+    nacos:
+      discovery:
+        server-addr: nacos.dev.health.com
+        namespace: bf79ddfa-47a0-4af0-a102-dcecf1d8732b

@@ -1,0 +1,12 @@
+spring:
+  application: 
+    name: springcloud-eureka
+server: 
+  port: 8001
+
+eureka:
+  instance:
+    prefer-ip-address: true 
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8002/eureka/,http://127.0.0.1:8003/eureka/ 
