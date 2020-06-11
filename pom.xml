@@ -24,7 +24,8 @@
     <module>springcloud-nacos-consumer</module>
     <module>springcloud-admin-nacos</module>
     <module>springcloud-webservice</module>
-	</modules>
+    <module>springcloud-security</module>
+  </modules>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

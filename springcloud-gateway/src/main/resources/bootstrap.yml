@@ -1,0 +1,33 @@
+server: 
+  port: 9050
+spring: 
+  application: 
+    name: gateway
+  cloud: 
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: 18e70abb-48bb-4a01-af64-ddc48f75face
+    gateway:
+      discovery: 
+        locator: 
+          enabled: true
+      routes:
+        - id: http
+          uri: http://172.28.19.70:80/
+          predicates:
+          - Path= /spc/book/getBookDetail/16801509277844
+          filters: 
+          - name: Test
+            args: 
+              op: root
+              type: he
+          
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" 
+  endpoint:
+      health:
+        show-details: ALWAYS      
