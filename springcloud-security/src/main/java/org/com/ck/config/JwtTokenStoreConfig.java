@@ -20,4 +20,9 @@ public class JwtTokenStoreConfig {
 		accessTokenConverter.setSigningKey("test_key");// 配置JWT使用的秘钥
 		return accessTokenConverter;
 	}
+	
+    @Bean
+    public JwtTokenEnhancer jwtTokenEnhancer() {
+        return new JwtTokenEnhancer();
+    }
 }
