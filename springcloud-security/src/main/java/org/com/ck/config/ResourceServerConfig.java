@@ -11,6 +11,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().anyRequest().authenticated().and().requestMatchers().antMatchers("/user/**");// 配置需要保护的资源路径
+		http.authorizeRequests().anyRequest().authenticated().and().requestMatchers().antMatchers("/test/**");// 配置需要保护的资源路径
 	}
 }
