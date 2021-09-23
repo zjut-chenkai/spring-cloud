@@ -1,11 +1,4 @@
-/**
- * @ spring-cloud-eureka-hystrix-consumer
- * @ com.cmcc.dhome.config
- * @ HytrixConfig.java
- * 
- * @author Shi Junjian  2018年10月31日
- * Copyright © CMCC Corporation. All rights reserved.
- */
+
 package org.com.ck.config;
 
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
