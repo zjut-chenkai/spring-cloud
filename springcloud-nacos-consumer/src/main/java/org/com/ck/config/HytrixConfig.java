@@ -14,13 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 
-/**
- * springboot2.0,必须添加此配置，否则hytrix dashboard无法监控到数据
- * @author Shi Junjian 
- * @date 2018年10月31日 - 下午3:31:52
- * @history 
- * 		 2018年10月31日 - 下午3:31:52 Shi Junjian  create.
- */
+
 @Configuration
 public class HytrixConfig {
     @Bean
